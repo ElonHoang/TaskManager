@@ -1,0 +1,75 @@
+package com.example.taskmanager.model;
+
+import java.util.Objects;
+
+public class User {
+    private int id;
+    private String name;
+    private String userName;
+    private String passWord;
+
+    public User() {
+    }
+
+    public User(int id, String name, String userName, String passWord) {
+        this.id = id;
+        this.name = name;
+        this.userName = userName;
+        this.passWord = passWord;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id && name.equals(user.name) && userName.equals(user.userName) && passWord.equals(user.passWord);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, userName, passWord);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
+                '}';
+    }
+}
