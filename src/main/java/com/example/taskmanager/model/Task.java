@@ -1,9 +1,6 @@
 package com.example.taskmanager.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +9,7 @@ import java.util.Objects;
 public class Task {
     @Id
     @Column(name = "task_Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "title")
     private String title;

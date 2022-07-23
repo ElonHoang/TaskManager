@@ -1,11 +1,19 @@
 package com.example.taskmanager.model;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name = "user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_Id")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "username")
     private String userName;
+    @Column(name = "password")
     private String passWord;
 
     public User() {
