@@ -1,12 +1,14 @@
 package com.example.taskmanager.controller;
 
+import com.example.taskmanager.model.User;
 import com.example.taskmanager.service.UserService;
 import com.example.taskmanager.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 @RequestMapping("/authen")
 public class UserController {
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @GetMapping("/login")
     public String goToLogin(Model model){
@@ -23,13 +25,14 @@ public class UserController {
         return "login";
     }
     @GetMapping("/register")
-    public String goToRegister(Model model){
-        model.addAttribute("register");
+    public String goToRegister(){
+
         return "register";
     }
-//    @GetMapping("/getAll")
-//    public String getAll(){
-//        userService.findAll();
-//        return "OK" ;
-//    }
+    @PostMapping("/add")
+    public String getAll(@ModelAttribute User user){
+
+        userService.createUser(user);
+        return "redirect:/login" ;
+    }
 }

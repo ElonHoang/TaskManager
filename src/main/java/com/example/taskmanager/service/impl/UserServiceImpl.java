@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
-public class UserServiceImpl implements UserDetailsService
-        //, UserService
+public class UserServiceImpl implements UserDetailsService, UserService
 {
     @Autowired
     private UserRepository userRepository;
@@ -37,31 +36,31 @@ public class UserServiceImpl implements UserDetailsService
     }
 
 
-//    @Override
-//    public User createUser(User user) {
-//        return userRepository.save(user);
-//    }
-//
-//    @Override
-//    public User updateUser(User user) {
-//        User userId = userRepository.findById((long) user.getId()).get();
-//        userId.setName(user.getName());
-//        userId.setPassWord(user.getPassWord());
-//        return user;
-//    }
-//
-//    @Override
-//    public Optional<User> getUserById(int id) {
-//        return userRepository.findById((long) id).isPresent() ? userRepository.findById((long) id) : Optional.empty();
-//    }
-//
-//    @Override
-//    public void deleteUserById(int userId) {
-//    userRepository.deleteById((long) userId);
-//    }
-//
-//    @Override
-//    public List<User> findAll() {
-//        return userRepository.findAll();
-//    }
+    @Override
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        User userId = userRepository.findById((long) user.getId()).get();
+        userId.setName(user.getName());
+        userId.setPassWord(user.getPassWord());
+        return user;
+    }
+
+    @Override
+    public Optional<User> getUserById(int id) {
+        return userRepository.findById((long) id).isPresent() ? userRepository.findById((long) id) : Optional.empty();
+    }
+
+    @Override
+    public void deleteUserById(int userId) {
+    userRepository.deleteById((long) userId);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return (List<User>) userRepository.findAll();
+    }
 }

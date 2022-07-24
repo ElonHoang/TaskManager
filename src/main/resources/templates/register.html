@@ -267,22 +267,22 @@
             <h1>Account Register</h1>
         </div>
         <div class="form-content">
-            <form method = "POST">
+            <form th:action="@{/authen/add}" method = "POST">
                 <div class="form-group">
                     <label for="username">Name</label>
-                    <input id="Name" type="text" name="name" required="required"/>
+                    <input id="name" type="text" name="name" required="required"/>
                 </div>
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input id="username" type="text" name="username" required="required"/>
+                    <input id="username"  type="text" name="userName" required="required"/>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" type="password" name="password" required="required"/>
+                    <input id="password"  type="password" name="passWord" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="Confirmpassword">Confirm Password</label>
-                    <input id="Confirmpassword" type="password" name="Confirmpassword" required="required"/>
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input id="confirmpassword" type="password" name="confirmpassword" required="required"/>
                 </div>
                 <div class="form-group">
                     <button type="submit">Register</button>

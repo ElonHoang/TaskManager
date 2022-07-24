@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .antMatchers("/authen/register").permitAll()
+                .antMatchers("/authen/register","/authen/add").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authen/login").permitAll()
@@ -67,7 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
     @Override
