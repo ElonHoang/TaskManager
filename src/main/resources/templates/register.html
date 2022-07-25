@@ -8,30 +8,6 @@
     <title>Register</title>
     <link rel="stylesheet" href="/register.css">
     <script src="/js/register.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Mong muốn của chúng ta
-            Validator({
-                form: '#form-2',
-                formGroupSelector: '.form-group',
-                errorSelector: '.form-message',
-                rules: [
-                    Validator.isRequired('#name', 'Name is not empty'),
-                    Validator.isRequired('#username', 'UserName is not empty'),
-                    Validator.isRequired('#password', 'Password is not empty'),
-                    Validator.minLength('#password', 6),
-                    Validator.maxLength('#password', 10),
-                    Validator.isConfirmed('#confirmpassword', function () {
-                        return document.querySelector('#form-2 #password').value;
-                    }, 'Confirm Password is not correct')
-                ],
-                onSubmit: function (data) {
-                    // Call API
-                    console.log(data);
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="form" id ="form-2">
@@ -41,7 +17,7 @@
             <h1>Account Register</h1>
         </div>
         <div class="form-content">
-            <form th:action="@{/authen/add}" method = "POST">
+            <form name = "myForm" th:action="@{/authen/add}" method = "POST" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="username">Name</label>
                     <input id="name" type="text" name="name"/>
