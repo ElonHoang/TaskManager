@@ -1,8 +1,8 @@
 function validateForm() {
     let name = document.forms["myForm"]["name"].value;
-    let username = document.forms["myForm"]["username"].value;
-    let password = document.forms["myForm"]["password"].value;
-    let confirm = document.forms["myForm"]["confirmpassword"].value;
+    let username = document.forms["myForm"]["userName"].value;
+    let password = document.forms["myForm"]["passWord"].value;
+    let confirm = document.forms["myForm"]["confirmPassword"].value;
     if (name == "") {
         alert("Name must not be empty !");
         return false;

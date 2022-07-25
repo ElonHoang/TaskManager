@@ -3,6 +3,7 @@ package com.example.taskmanager.service.impl;
 import com.example.taskmanager.model.User;
 import com.example.taskmanager.repository.UserRepository;
 
+//import com.example.taskmanager.service.UserDetail;
 import com.example.taskmanager.service.UserDetail;
 import com.example.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,6 @@ public class UserServiceImpl implements UserDetailsService, UserService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User findUser = userRepository.findByUsername(username);
-//        List<GrantedAuthority> grantList = new ArrayList<>();
-//        GrantedAuthority authority = new SimpleGrantedAuthority("USER");
-//        grantList.add(authority);
-//        UserDetails userDetails = new org.springframework.security.core.userdetails.User(findUser.getUserName(),
-//                findUser.getPassWord(),grantList);
-//
-//        return userDetails;
         return new UserDetail(findUser);
     }
 

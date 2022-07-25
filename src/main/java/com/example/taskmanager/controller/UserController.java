@@ -30,9 +30,8 @@ public class UserController {
         return "register";
     }
     @PostMapping("/add")
-    public String getAll(@ModelAttribute User user){
-
+    public String addUser(@ModelAttribute User user){
         userService.createUser(user);
-        return "redirect:/login" ;
+        return "register" ;
     }
 }
