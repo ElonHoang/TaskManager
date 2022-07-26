@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,15 @@ public class UserServiceImpl implements UserDetailsService, UserService
 
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public User createUser(User user, BindingResult rs) {
+        User findUser = userRepository.findByUsername(user.getUserName());
+        if(findUser.getUserName().equals(user.getUserName())){
+            rs.addError(new FieldError("user","userName","UserName is already exists !"));
+            return null;
+        }
+            return userRepository.save(user);
+
+
     }
 
     @Override
