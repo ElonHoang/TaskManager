@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface UserRepository
         //extends JpaRepository<User,Long>
-        extends JpaRepository<User,Long>
+        extends JpaRepository<User,Integer>
 {
     //@Query("SELECT  u FROM User u WHERE u.userName = ?1")
     @Query("SELECT  u FROM User u WHERE u.userName = ?1")

@@ -25,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task updateTask(Task task) {
-        Task t = taskRepository.findById((long) task.getId()).get();
+        Task t = taskRepository.findById(task.getId()).get();
         t.setTitle(task.getTitle());
         t.setDescription(task.getDescription());
         t.setStatus(task.getStatus());
@@ -35,12 +35,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Optional<Task> getTaskById(int id) {
-        return taskRepository.findById((long) id).isPresent() ? taskRepository.findById((long) id) : Optional.empty();
+        return taskRepository.findById(id).isPresent() ? taskRepository.findById(id) : Optional.empty();
     }
 
     @Override
     public void deleteTaskById(int taskId) {
-        taskRepository.deleteById((long) taskId);
+        taskRepository.deleteById(taskId);
     }
 
     @Override

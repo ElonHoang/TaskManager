@@ -33,12 +33,7 @@ public class UserServiceImpl implements UserDetailsService, UserService
 
 
     @Override
-    public User createUser(User user, BindingResult rs) {
-        User findUser = userRepository.findByUsername(user.getUserName());
-        if(findUser.getUserName().equals(user.getUserName())){
-            rs.addError(new FieldError("user","userName","UserName is already exists !"));
-            return null;
-        }
+    public User createUser(User user) {
             return userRepository.save(user);
 
 
@@ -46,7 +41,7 @@ public class UserServiceImpl implements UserDetailsService, UserService
 
     @Override
     public User updateUser(User user) {
-        User userId = userRepository.findById((long) user.getId()).get();
+        User userId = userRepository.findById(user.getId()).get();
         userId.setName(user.getName());
         userId.setPassWord(user.getPassWord());
         return user;
@@ -54,12 +49,22 @@ public class UserServiceImpl implements UserDetailsService, UserService
 
     @Override
     public Optional<User> getUserById(int id) {
-        return userRepository.findById((long) id).isPresent() ? userRepository.findById((long) id) : Optional.empty();
+        return userRepository.findById(id).isPresent() ? userRepository.findById(id) : Optional.empty();
+    }
+
+    @Override
+    public boolean getUserByString(String name) {
+        User findUser = userRepository.findByUsername(name);
+        if(findUser == null) return false;
+            if(findUser.getUserName().equals(name)){
+                return true;
+            }
+        return false;
     }
 
     @Override
     public void deleteUserById(int userId) {
-    userRepository.deleteById((long) userId);
+    userRepository.deleteById(userId);
     }
 
     @Override

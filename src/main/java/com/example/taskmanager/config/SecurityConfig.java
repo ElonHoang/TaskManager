@@ -22,8 +22,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
-//    @Autowired
-//     private UserServiceImpl userServiceimpl;
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserServiceImpl();
@@ -54,13 +52,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .antMatchers("/authen/register","/login.css","/js/**","/register.css").permitAll()
+                .antMatchers("/authen/**","/all/**","/js/**","/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authen/login").permitAll()
-                .defaultSuccessUrl("/all/task?success=true")
+                .defaultSuccessUrl("/all/task?success=true",true)
                 .failureUrl("/authen/login?success=false")
-                .loginProcessingUrl("/j_spring_security_check");
+                .usernameParameter("userName")
+                .passwordParameter("passWord")
+                .loginProcessingUrl("/j_spring_security_check")
+                .and()
+                .logout().logoutSuccessUrl("/authen/login").permitAll();
+
+
     }
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

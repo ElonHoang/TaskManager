@@ -1,18 +1,22 @@
 package com.example.taskmanager.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 @Table(name="task")
-
 public class Task {
     @Id
     @Column(name = "task_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "title")
+    @NotBlank(message = "title not blank")
     private String title;
+    @NotBlank(message = "title not blank")
     @Column(name = "description")
     private String description;
     @Column(name = "status")

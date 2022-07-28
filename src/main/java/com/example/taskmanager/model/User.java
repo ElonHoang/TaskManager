@@ -9,7 +9,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_Id")
     private int id;
-
     @Column(name = "name")
     private String name;
     @Column(name = "username")
@@ -40,7 +39,7 @@ public class User {
     }
 
     public String getPassWord() {
-        return passWord;
+        return this.passWord;
     }
 
     public void setId(int id) {

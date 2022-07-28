@@ -1,6 +1,7 @@
 package com.example.taskmanager.controller;
 
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.model.TaskStatus;
 import com.example.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,24 +29,44 @@ public class TaskController {
         List<Task> task = taskService.findAll();
         model.addAttribute("show", task);
         return "show";
-//        return taskService.findAll();
     }
     @GetMapping("/task{id}")
     public Optional<Task> getTaskById(int id) {
         return taskService.getTaskById(id);
     }
 
-    @PostMapping("/post")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task t = taskService.createTask(task);
-        return new ResponseEntity(t, HttpStatus.CREATED);
+    @GetMapping("/add")
+    public String goToAdd(Model model){
+        model.addAttribute("task",new Task());
+        return "addTask";
     }
 
-//    @PutMapping("/put{id}")
-//    public ResponseEntity<Task> updateTask(@RequestBody Task task, @PathVariable("id") int id) {
-//        Optional<Task> findId = taskService.getTaskById(id);
-//        ret
-//    }
+    @PostMapping("/post")
+    public String createTask(@Valid @ModelAttribute("task") Task task, BindingResult rs)  {
+            if(rs.hasErrors()){
+                return "addTask";
+            }
+            taskService.createTask(task);
+            return "redirect:/all/task";
+
+    }
+    @GetMapping ("/edit/{id}")
+    public String editTask(@Valid Model model, @PathVariable(value = "id") int id){
+//        if(rs.hasErrors()){
+//            return "editTask";
+//        }
+        Optional<Task> edit = taskService.getTaskById(id);
+        model.addAttribute("task",edit);
+        //return "redirect:/all/task";
+        return "editTask";
+    }
+    @GetMapping("/status")
+    public String getAllListStatus(Model model){
+        List<TaskStatus> list = null;
+        for(TaskStatus t : TaskStatus.values()){
+            list.add(t);
+        }
+    }
 
     @GetMapping("/task/page")
     public String pagination(Model model, @RequestParam("p") Optional<Integer> p) {
