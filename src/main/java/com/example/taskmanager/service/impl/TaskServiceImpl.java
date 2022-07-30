@@ -2,6 +2,7 @@ package com.example.taskmanager.service.impl;
 
 
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.model.TaskStatus;
 import com.example.taskmanager.repository.TaskRepository;
 import com.example.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +54,33 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Page<Task> getPage(Pageable page) {
         return taskRepository.findAll(page);
+    }
+
+    @Override
+    public List<Task> searchTaskByTitle(String title) {
+        if(title == null){
+            return taskRepository.findAll() ;
+        }
+        return taskRepository.searchTaskTitle(title);
+    }
+
+    @Override
+    public List<Task> selectTaskByTaskStatus(TaskStatus task) {
+        List<Task> taskList = null;
+        switch (task.getValue()){
+            case "OPEN":
+                taskList =  taskRepository.selectTaskByTaskStatus(TaskStatus.OPEN);
+                break;
+            case "DONE":
+                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.DONE);
+                break;
+            case "INPROGRESS":
+                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.INPROGRESS);
+                break;
+            default:
+                taskList = taskRepository.findAll();
+                break;
+        }
+        return taskList;
     }
 }

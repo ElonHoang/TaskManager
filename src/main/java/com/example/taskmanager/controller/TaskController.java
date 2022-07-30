@@ -1,5 +1,4 @@
 package com.example.taskmanager.controller;
-
 import com.example.taskmanager.model.Task;
 import com.example.taskmanager.model.TaskStatus;
 import com.example.taskmanager.service.TaskService;
@@ -7,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -57,21 +54,35 @@ public class TaskController {
 //        }
         Optional<Task> edit = taskService.getTaskById(id);
         model.addAttribute("task",edit);
-        //return "redirect:/all/task";
         return "editTask";
     }
-    @GetMapping("/status")
-    public String getAllListStatus(Model model){
-        List<TaskStatus> list = null;
-        for(TaskStatus t : TaskStatus.values()){
-            list.add(t);
-        }
+    @GetMapping("/detail/{id}")
+    public String detailTask(Model model, @PathVariable(value = "id") int id){
+        Optional<Task> detail =  taskService.getTaskById(id);
+        model.addAttribute("detail",detail);
+        return "detailTask";
     }
-
+    @GetMapping("/option")
+    public String selectTaskByOption(Model model, @Param("option") TaskStatus option){
+        List<Task> taskList = taskService.selectTaskByTaskStatus(option);
+        model.addAttribute("show",taskList);
+        model.addAttribute("option",option);
+        return "show";
+    }
+    @GetMapping("/delete/{id}")
+    public String deleteTaskInHome(@PathVariable(value = "id") int id){
+        taskService.deleteTaskById(id);
+        return "redirect:/all/task/page?=1";
+    }
+    @GetMapping("/search")
+    public String searchByTitle(Model model,@Param("search") String search){
+    List<Task> taskList = taskService.searchTaskByTitle(search);
+    model.addAttribute("show",taskList);
+    model.addAttribute("search",search);
+    return "show";
+    }
     @GetMapping("/task/page")
     public String pagination(Model model, @RequestParam("p") Optional<Integer> p) {
-
-//        Pageable pageable =  PageRequest.of(p.orElse(0),7);
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page<Task> page = taskService.getPage((PageRequest) pageable);
         model.addAttribute("show", page);

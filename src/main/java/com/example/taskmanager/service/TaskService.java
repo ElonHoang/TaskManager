@@ -1,6 +1,7 @@
 package com.example.taskmanager.service;
 
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.model.TaskStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,4 +15,6 @@ public interface TaskService {
     void deleteTaskById(int taskId);
     List<Task> findAll();
     Page<Task> getPage(Pageable page);
+    List<Task> searchTaskByTitle(String title);
+    List<Task> selectTaskByTaskStatus(TaskStatus task);
 }

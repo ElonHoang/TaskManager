@@ -16,18 +16,15 @@
             <button type="button" class="btn btn-primary"><a th:href="@{/all/add}">Create</a></button>
         </div>
 
-        <form class="form-inline"style="display: flex;" th:object="${show}">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline" style="display: flex;" th:object="${show}" th:action="@{/all/search}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name = search th:value="${search}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 
-            <select style="height: 40px; width: 80px ; margin-left: 10px;">
-                <option selected value="Open">Open</option>
-                <option  value="Inprogress">Inprogress</option>
-                <option  value="Done">Done</option>
-                <option  value="All">All</option>
+            <select style="height: 40px; width: 80px ; margin-left: 10px;" th:action="@{/all/option}">
+                <option selected value="ALL">ALL</option>
+                <option th:each="item: ${T(com.example.taskmanager.model.TaskStatus).values()}" th:value="${item}" th:text="${item.value}" name = option></option>
             </select>
         </form>
-
 
     </nav>
 
@@ -46,19 +43,20 @@
             <td th:text="${task.title}"></td>
             <td th:text="${task.status}"></td>
             <td>
-                <button type="button" class="btn btn-primary" ><a th:href="@{/all/edit/{id}(id=${task.id})}"/>Edit</button>
-                <button type="button" class="btn btn-primary">Detail</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-primary"><a th:href="@{/all/edit/{id}(id=${task.id})}"/>Edit</button>
+                <button type="button" class="btn btn-primary"><a th:href="@{/all/detail/{id}(id=${task.id})}"/>Detail</button>
+                <button type="button" class="btn btn-danger"><a th:href="@{/all/delete/{id}(id=${task.id})}"/>Delete</button>
             </td>
         </tr>
         </tbody>
     </table>
     <ul class="pagination" style="padding-left: 62%; !important;">
-        <li class="page-item"><a class="page-link" href="/all/task/page">1</a></li>
+        <li class="page-item"><a class="page-link" href="/all/task/page?=1">1</a></li>
         <li class="page-item"><a class="page-link" href="/all/task/page?p=2">2</a></li>
         <li class="page-item"><a class="page-link" href="/all/task/page?p=3">3</a></li>
         <li class="page-item"><a class="page-link" href="/all/task/page?p=4">4</a></li>
         <li class="page-item"><a class="page-link" href="/all/task/page?p=5">5</a></li>
     </ul>
 </div>
+</body>
 </html>
