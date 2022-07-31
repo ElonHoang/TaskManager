@@ -35,7 +35,6 @@ public class UserController {
     @GetMapping("/get")
     public String show(Model model){
         model.addAttribute("user",userService.findAll());
-
         return "test";
     }
     @PostMapping("/add")

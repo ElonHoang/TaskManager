@@ -15,6 +15,6 @@ public interface TaskService {
     void deleteTaskById(int taskId);
     List<Task> findAll();
     Page<Task> getPage(Pageable page);
-    List<Task> searchTaskByTitle(String title);
-    List<Task> selectTaskByTaskStatus(TaskStatus task);
+    List<Task> searchTaskByTitle(String title,String task);
+//    List<Task> selectTaskByTaskStatus(String task);
 }

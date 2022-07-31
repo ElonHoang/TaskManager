@@ -57,30 +57,45 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> searchTaskByTitle(String title) {
+    public List<Task> searchTaskByTitle(String title,String task) {
         if(title == null){
             return taskRepository.findAll() ;
         }
-        return taskRepository.searchTaskTitle(title);
-    }
-
-    @Override
-    public List<Task> selectTaskByTaskStatus(TaskStatus task) {
         List<Task> taskList = null;
-        switch (task.getValue()){
+        switch (task){
             case "OPEN":
-                taskList =  taskRepository.selectTaskByTaskStatus(TaskStatus.OPEN);
+                taskList =  taskRepository.selectTaskByTaskStatus(TaskStatus.OPEN,title);
                 break;
             case "DONE":
-                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.DONE);
+                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.DONE,title);
                 break;
             case "INPROGRESS":
-                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.INPROGRESS);
+                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.INPROGRESS,title);
                 break;
             default:
-                taskList = taskRepository.findAll();
+                taskList = taskRepository.searchTaskTitle(title);
                 break;
         }
         return taskList;
     }
+
+//    @Override
+//    public List<Task> selectTaskByTaskStatus(String task) {
+//        List<Task> taskList = null;
+//        switch (task){
+//            case "OPEN":
+//                taskList =  taskRepository.selectTaskByTaskStatus(TaskStatus.OPEN);
+//                break;
+//            case "DONE":
+//                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.DONE);
+//                break;
+//            case "INPROGRESS":
+//                taskList = taskRepository.selectTaskByTaskStatus(TaskStatus.INPROGRESS);
+//                break;
+//            default:
+//                taskList = taskRepository.findAll();
+//                break;
+//        }
+//        return taskList;
+//    }
 }

@@ -13,6 +13,6 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task,Integer> {
     @Query("SELECT u FROM Task u WHERE u.title LIKE %?1% ")
     public List<Task> searchTaskTitle(String title);
-    @Query("SELECT u FROM Task u WHERE u.status = ?1")
-    public List<Task> selectTaskByTaskStatus(TaskStatus task);
+    @Query("SELECT u FROM Task u WHERE u.status = ?1 AND u.title LIKE %?2% ")
+    public List<Task> selectTaskByTaskStatus(TaskStatus task, String title);
 }

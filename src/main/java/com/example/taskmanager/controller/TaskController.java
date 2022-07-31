@@ -62,25 +62,27 @@ public class TaskController {
         model.addAttribute("detail",detail);
         return "detailTask";
     }
-    @GetMapping("/option")
-    public String selectTaskByOption(Model model, @Param("option") TaskStatus option){
-        List<Task> taskList = taskService.selectTaskByTaskStatus(option);
-        model.addAttribute("show",taskList);
-        model.addAttribute("option",option);
-        return "show";
-    }
+
     @GetMapping("/delete/{id}")
     public String deleteTaskInHome(@PathVariable(value = "id") int id){
         taskService.deleteTaskById(id);
         return "redirect:/all/task/page?=1";
     }
     @GetMapping("/search")
-    public String searchByTitle(Model model,@Param("search") String search){
-    List<Task> taskList = taskService.searchTaskByTitle(search);
+    public String searchByTitle(Model model,@Param("search") String search, @Param("option") String option){
+    List<Task> taskList = taskService.searchTaskByTitle(search,option);
     model.addAttribute("show",taskList);
     model.addAttribute("search",search);
+    model.addAttribute("option",option);
     return "show";
     }
+//    @GetMapping("/option")
+//    public String selectTaskByOption(Model model, @Param("option") String option){
+//        List<Task> taskList = taskService.selectTaskByTaskStatus(option);
+//        model.addAttribute("show",taskList);
+//
+//        return "show";
+//    }
     @GetMapping("/task/page")
     public String pagination(Model model, @RequestParam("p") Optional<Integer> p) {
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
