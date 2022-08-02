@@ -3,31 +3,31 @@ function validateForm() {
     let username = document.forms["myForm"]["userName"].value;
     let password = document.forms["myForm"]["passWord"].value;
     let confirm = document.forms["myForm"]["confirmPassword"].value;
-    if (name == "") {
-        alert("Name must not be empty !");
-        return false;
-    }
-    if (name.length > 44 || name.length < 3) {
-        alert("Name must be < 44 characters and > 3 characters !");
-        return false;
-    }
-    if (username == "") {
-        alert("UserName must not be empty !");
-        return false;
-    }
-    if (username.length > 44 || username.length < 3) {
-        alert("UserName must be < 44 characters and > 3 characters  !");
-        return false;
-    }
-
-    if (password == "") {
-        alert("Password must not be empty !");
-        return false;
-    }
-    if (password.length > 250 || password.length < 3 ) {
-        alert("Password must be < 250 characters and > 3 characters !");
-        return false;
-    }
+    // if (name == "") {
+    //     alert("Name must not be empty !");
+    //     return false;
+    // }
+    // if (name.length > 44 || name.length < 3) {
+    //     alert("Name must be < 44 characters and > 3 characters !");
+    //     return false;
+    // }
+    // if (username == "") {
+    //     alert("UserName must not be empty !");
+    //     return false;
+    // }
+    // if (username.length > 44 || username.length < 3) {
+    //     alert("UserName must be < 44 characters and > 3 characters  !");
+    //     return false;
+    // }
+    //
+    // if (password == "") {
+    //     alert("Password must not be empty !");
+    //     return false;
+    // }
+    // if (password.length > 250 || password.length < 3 ) {
+    //     alert("Password must be < 250 characters and > 3 characters !");
+    //     return false;
+    // }
     if(confirm != password){
         alert("Confirm Password must be equals  Password");
         return false;

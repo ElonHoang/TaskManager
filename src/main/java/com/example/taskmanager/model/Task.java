@@ -8,15 +8,15 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Table(name="task")
+@Table(name = "task")
 public class Task {
     @Id
     @Column(name = "task_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message = "title not blank")
+    @Size(min = 3, max = 250, message = "title min >= 3 and max <= 250")
     private String title;
-    @NotBlank(message = "title not blank")
+    @Size(min = 3, max = 250, message = "description min >= 3 and max <= 250")
     @Column(name = "description")
     private String description;
     @Column(name = "status")

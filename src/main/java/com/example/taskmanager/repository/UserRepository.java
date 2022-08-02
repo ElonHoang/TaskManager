@@ -9,13 +9,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface UserRepository
-        //extends JpaRepository<User,Long>
-        extends JpaRepository<User,Integer>
-{
-    //@Query("SELECT  u FROM User u WHERE u.userName = ?1")
+public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT  u FROM User u WHERE u.userName = ?1")
     public User findByUsername(String username);
+
+    @Query("SELECT u.passWord FROM User u WHERE  u.userName = ?1")
+    public String findByPassword(String username);
 }

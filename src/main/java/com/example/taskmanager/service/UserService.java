@@ -15,4 +15,5 @@ public interface UserService  {
     boolean getUserByString(String name);
     void deleteUserById(int userId);
     List<User> findAll();
+    public String findByPassword(String username);
 }

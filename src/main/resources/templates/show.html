@@ -12,13 +12,13 @@
 <div id="wrapper">
     <nav class="navbar navbar-light bg-light justify-content-between">
         <div>
-            <button type="button" class="btn btn-primary">Export CSV</button>
-            <button type="button" class="btn btn-primary"><a th:href="@{/all/add}">Create</a></button>
+            <button type="button" class="btn btn-primary"><a id = "linkCss" th:href="@{/all/export}" />Export CSV</button>
+            <button type="button" class="btn btn-primary"><a id = "linkCss" th:href="@{/all/add}">Create</a></button>
         </div>
 
         <form class="form-inline" style="display: flex;" th:object="${show}" th:action="@{/all/search}" >
 <!--           -->
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name = search th:value="${search}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name = title th:value="${title}">
 
 
             <select style="height: 40px; width: 80px ; margin-left: 10px;" name = option>
@@ -45,20 +45,26 @@
             <td th:text="${task.title}"></td>
             <td th:text="${task.status}"></td>
             <td>
-                <button type="button" class="btn btn-primary"><a th:href="@{/all/edit/{id}(id=${task.id})}"/>Edit</button>
-                <button type="button" class="btn btn-primary"><a th:href="@{/all/detail/{id}(id=${task.id})}"/>Detail</button>
-                <button type="button" class="btn btn-danger"><a th:href="@{/all/delete/{id}(id=${task.id})}"/>Delete</button>
+                <button type="button" class="btn btn-primary"><a id = "linkCss" th:href="@{/all/edit/{id}(id=${task.id})}"/>Edit</button>
+                <button type="button" class="btn btn-primary"><a id = "linkCss" th:href="@{/all/detail/{id}(id=${task.id})}"/>Detail</button>
+                <button type="button" class="btn btn-danger"><a id = "linkCss" th:href="@{/all/delete/{id}(id=${task.id})}" onclick="return confirm('Are you sure you want to delete')"/>Delete</button>
             </td>
         </tr>
         </tbody>
     </table>
-    <ul class="pagination" style="padding-left: 62%; !important;">
-        <li class="page-item"><a class="page-link" href="/all/task/page?=1">1</a></li>
-        <li class="page-item"><a class="page-link" href="/all/task/page?p=2">2</a></li>
-        <li class="page-item"><a class="page-link" href="/all/task/page?p=3">3</a></li>
-        <li class="page-item"><a class="page-link" href="/all/task/page?p=4">4</a></li>
-        <li class="page-item"><a class="page-link" href="/all/task/page?p=5">5</a></li>
-    </ul>
+    <div class="example" th:if="${totals >= 1}">
+        <nav aria-label="Page">
+            <a th:if="${currentPage < totals}"  th:href="@{'/all/task/page/' +${currentPage - 1} + '?title=' + ${title} + '&option=' + ${option}}">Previous</a>
+            <span th:unless="${currentPage < totals}">Previous</span>
+            <span th:each="i : ${#numbers.sequence(1,totals)}">
+                <a class="btn btn-secondary pageBtn" th:if="${currentPage != i}" th:href="@{'/all/task/page/' +${i} + '?title=' + ${title} + '&option=' + ${option}}">[[${i}]]</a>
+                <span class="btn btn-primary pageBtn" th:unless="${currentPage != i}">[[${i}]]</span>
+            </span>
+
+            <a th:if="${currentPage < totals}" th:href="@{'/all/task/page/' + ${currentPage + 1} + '?title=' + ${title} + '&option=' + ${option}}">Next</a>
+            <span th:unless="${currentPage < totals}">Next</span>
+        </nav>
+    </div>
 </div>
 </body>
 </html>

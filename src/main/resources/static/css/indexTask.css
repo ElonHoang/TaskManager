@@ -104,6 +104,10 @@ h1 {
 #keywords thead tr th.headerSortDown span {
     background-image: url('https://i.imgur.com/RkA9MBo.png');
 }
+#linkCss{
+    text-decoration: none;
+    color: white;
+}
 
 
 #keywords tbody tr {

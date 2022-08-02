@@ -1,20 +1,25 @@
 package com.example.taskmanager.service;
 
 import com.example.taskmanager.model.Task;
-import com.example.taskmanager.model.TaskStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
-    Task createTask(Task task);
-    Task updateTask(Task task);
+    Integer createTask(Task task);
+
+    Integer updateTask(Task task);
+
     Optional<Task> getTaskById(int id);
+
     void deleteTaskById(int taskId);
+
     List<Task> findAll();
-    Page<Task> getPage(Pageable page);
-    List<Task> searchTaskByTitle(String title,String task);
-//    List<Task> selectTaskByTaskStatus(String task);
+
+    List<Task> findAllTask();
+
+    public Page<Task> searchTaskTitle(String title, int page);
+
+    public List<Task> selectTaskByTaskStatusAndTitle(String task, String title, int page);
 }
