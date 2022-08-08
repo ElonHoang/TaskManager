@@ -3,6 +3,8 @@ package com.example.taskmanager.service;
 import com.example.taskmanager.model.Task;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +19,15 @@ public interface TaskService {
 
     List<Task> findAll();
 
-    List<Task> findAllTask();
+    Page<Task> showAllPage(Integer page);
 
-    public Page<Task> searchTaskTitle(String title, int page);
 
-    public List<Task> selectTaskByTaskStatusAndTitle(String task, String title, int page);
+     Page<Task> searchTaskTitle(String title, int page);
+
+     Page<Task> selectTaskByTaskStatusAndTitle(String status, String title, int page);
+
+     Integer countPagesByTitleAndStatus(String title, String status);
+
+     void exportToCSV(HttpServletResponse response) throws IOException;
+
 }

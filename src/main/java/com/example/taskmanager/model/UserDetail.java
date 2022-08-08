@@ -1,6 +1,5 @@
-package com.example.taskmanager.service;
+package com.example.taskmanager.model;
 
-import com.example.taskmanager.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -24,12 +23,12 @@ public class UserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.user.getPassWord();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getUserName();
+        return this.user.getUsername();
     }
 
     @Override

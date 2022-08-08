@@ -1,8 +1,15 @@
-.form{
+.form {
     margin-left: 30%;
 
 }
-#linkCss{
+
+#linkCss {
     text-decoration: none;
     color: white;
+}
+
+#description {
+    width: 60%;
+    line-height: 500%;
+    resize: none;
 }

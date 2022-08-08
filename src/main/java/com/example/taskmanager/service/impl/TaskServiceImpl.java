@@ -1,106 +1,121 @@
 package com.example.taskmanager.service.impl;
 
-
 import com.example.taskmanager.mapper.TaskMapper;
 import com.example.taskmanager.model.Task;
 import com.example.taskmanager.model.TaskStatus;
-import com.example.taskmanager.repository.TaskRepository;
 import com.example.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     @Autowired
-     TaskRepository taskRepository;
-    @Autowired
-     TaskMapper taskMapper;
+    TaskMapper taskMapper;
 
     @Override
     public Integer createTask(Task task) {
-        //taskRepository.save(task);
         return taskMapper.insertTask(task);
     }
 
     @Override
     public Integer updateTask(Task task) {
-        //Task t = taskRepository.findById(task.getId()).get();
-        //Optional<Task> t = taskMapper.selectTaskById(task.getId());
-//        t.setTitle(task.getTitle());
-//        t.setDescription(task.getDescription());
-//        t.setStatus(task.getStatus());
-        //taskRepository.save(t);
         return taskMapper.updateTask(task);
-
-//        return t;
     }
 
     @Override
     public Optional<Task> getTaskById(int id) {
-//        return taskRepository.findById(id).isPresent() ? taskRepository.findById(id) : Optional.empty();
-        return taskMapper.selectTaskById(id).isPresent() ? taskRepository.findById(id) : Optional.empty();
+        return taskMapper.selectTaskById(id).isPresent() ? taskMapper.selectTaskById(id) : Optional.empty();
     }
 
     @Override
     public void deleteTaskById(int taskId) {
-        //taskRepository.deleteById(taskId);
         taskMapper.deleteTask(taskId);
     }
 
     @Override
     public List<Task> findAll() {
-
-        //return taskRepository.findAll();
         return taskMapper.findAll();
     }
 
     @Override
-    public List<Task> findAllTask() {
-        return null;
+    public Page<Task> showAllPage(Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 6);
+        List<Task> tasks = taskMapper.findAllPage(pageable);
+        return new PageImpl<>(tasks, pageable, taskMapper.countPages(pageable));
     }
-
-//    @Override
-//    public List<Task> findAllTask() {
-//        return taskMapper.findAll();
-//    }
 
     @Override
     public Page<Task> searchTaskTitle(String title, int page) {
         Pageable pageable = PageRequest.of(page - 1, 6);
-        return taskRepository.searchTaskTitle(title, pageable);
+        List<Task> tasks = taskMapper.searchTasksByTitle(title, pageable);
+        return new PageImpl<>(tasks, pageable, taskMapper.countPages(pageable));
     }
 
 
     @Override
-    public List<Task> selectTaskByTaskStatusAndTitle(String task, String title, int page) {
+    public Page<Task> selectTaskByTaskStatusAndTitle(String status, String title, int page) {
         Pageable pageable = PageRequest.of(page - 1, 6);
-       // Page<Task> taskList;
-        List<Task> taskList = null;
-        switch (task) {
+        Page<Task> tasks;
+        List<Task> taskList;
+        switch (status) {
             case "OPEN":
-//                taskList = taskRepository.selectTaskByTaskStatusAndTitle(TaskStatus.OPEN, title, pageable);
-                //taskList = taskMapper.searchTasksByTitleAndStatus(title,TaskStatus.OPEN.getValue(),pageable);
+                taskList = taskMapper.searchTasksByTitleAndStatus(title, TaskStatus.OPEN.getValue(), pageable);
+                tasks = new PageImpl<>(taskList, pageable, taskMapper.countPagesByTitleAndStatus(title, status));
                 break;
             case "DONE":
-//                taskList = taskRepository.selectTaskByTaskStatusAndTitle(TaskStatus.DONE, title, pageable);
-                //taskList = taskMapper.searchTasksByTitleAndStatus(title,TaskStatus.DONE.getValue(),pageable);
+                taskList = taskMapper.searchTasksByTitleAndStatus(title, TaskStatus.DONE.getValue(), pageable);
+                tasks = new PageImpl<>(taskList, pageable, taskMapper.countPagesByTitleAndStatus(title, status));
                 break;
             case "INPROGRESS":
-//                taskList = taskRepository.selectTaskByTaskStatusAndTitle(TaskStatus.INPROGRESS, title, pageable);
-                //taskList = taskMapper.searchTasksByTitleAndStatus(title,TaskStatus.INPROGRESS.getValue(),pageable);
+                taskList = taskMapper.searchTasksByTitleAndStatus(title, TaskStatus.INPROGRESS.getValue(), pageable);
+                tasks = new PageImpl<>(taskList, pageable, taskMapper.countPagesByTitleAndStatus(title, status));
                 break;
             default:
-                //taskList = taskRepository.searchTaskTitle(title, pageable);
-                //taskList = taskMapper.searchTasksByTitle(title,pageable);
-                //taskList = taskMapper.searchTasksByTitleAndStatus(title,TaskStatus.OPEN.getValue(),pageable);
+                taskList = taskMapper.searchTasksByTitle(title, pageable);
+                tasks = new PageImpl<>(taskList, pageable, taskMapper.countPagesByTitle(title));
                 break;
         }
-        return taskList;
+        return tasks;
+    }
+
+    @Override
+    public Integer countPagesByTitleAndStatus(String title, String status) {
+        return taskMapper.countPagesByTitleAndStatus(title, status);
+    }
+
+    @Override
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Task_" + currentDateTime + ".csv";
+        response.setHeader(headerKey, headerValue);
+        List<Task> listUsers = taskMapper.findAll();
+        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+        String[] csvHeader = {"Task ID", "Title", "Description", "Status"};
+        String[] nameMapping = {"id", "title", "description", "status"};
+
+        csvWriter.writeHeader(csvHeader);
+
+        for (Task task : listUsers) {
+            csvWriter.write(task, nameMapping);
+        }
+        csvWriter.close();
     }
 }

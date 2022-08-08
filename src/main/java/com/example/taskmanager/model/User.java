@@ -1,89 +1,46 @@
 package com.example.taskmanager.model;
 
+import com.example.taskmanager.model.ulti.CharacterAnno;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Objects;
+
 
 @Entity
 @Table(name = "user")
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_Id")
     private int id;
-    @Size(min = 3, max = 50, message = "name min >= 3 and max <= 50")
+
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     @Column(name = "name")
     private String name;
-    @Size(min = 3, max = 50, message = "userName min >= 3 and max <= 50")
+    @CharacterAnno(message = "Username input must be [0,9],[a-z],[A-Z]")
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     @Column(name = "username")
-    private String userName;
-    @Size(min = 3, max = 250, message = "passWord min >= 3 and max <= 250")
+    private String username;
+    @Size(min = 6, max = 70, message = "Password must be between 6 and 70 characters")
     @Column(name = "password")
-    private String passWord;
+    private String password;
 
     public User() {
     }
 
-    public User(int id, String name, String userName, String passWord) {
+    public User(int id, String name, String username, String password) {
         this.id = id;
         this.name = name;
-        this.userName = userName;
-        this.passWord = passWord;
+        this.username = username;
+        this.password = password;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getPassWord() {
-        return this.passWord;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return id == user.id && name.equals(user.name) && userName.equals(user.userName) && passWord.equals(user.passWord);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, userName, passWord);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                '}';
-    }
 }

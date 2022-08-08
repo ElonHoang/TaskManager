@@ -1,23 +1,16 @@
 package com.example.taskmanager.config;
 
-
-import com.example.taskmanager.service.UserService;
 import com.example.taskmanager.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -35,19 +28,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .antMatchers("/authen/**", "/all/**", "/js/**", "/css/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/all/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/authen/login").permitAll()
-                .defaultSuccessUrl("/all/task?success=true", true)
-                .failureUrl("/authen/login?success=false")
-                .usernameParameter("userName")
-                .passwordParameter("passWord");
-        //.loginProcessingUrl("/j_spring_security_check");
-        //.and()
-        //.logout().logoutSuccessUrl("/authen/login").permitAll();
-
-
+                .formLogin().loginPage("/authen/login")
+                .defaultSuccessUrl("/all/tasks?success=true", true)
+                .failureUrl("/authen/login/false")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .and()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/authen/login");
     }
 
     @Bean
